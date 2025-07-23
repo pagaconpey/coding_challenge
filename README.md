@@ -2,11 +2,11 @@
 
 ¡Gracias por tu interés en unirte a nuestro equipo! Esta prueba está diseñada para evaluar tus habilidades técnicas, tu forma de resolver problemas, tu capacidad de aprender y tu habilidad para seguir instrucciones con claridad.
 
-> Debes ser capaz de construir y resolver problemas en un tercio del tiempo que la mayoría de las personas competentes consideran posible.
+> Debes ser capaz de resolver problemas y construir soluciones en una tercera parte del tiempo que tardaría un desarrollador competente promedio, manteniendo altos estándares de calidad.
 
 ## 🎯 Objetivo
 
-Crear una aplicación web que permita a usuarios publicar y leer notas con un "sentimiento". Esta aplicación debe ser completamente funcional y desplegada en producción. Opcionalmente, puedes agregar un notebook de analítica y desplegar el backend como infraestructura como código.
+Crear una aplicación web que permita publicar y leer notas con un "sentimiento". Esta aplicación debe ser completamente funcional y desplegada en producción. Opcionalmente, puedes agregar un notebook de analítica y desplegar el backend como infraestructura como código.
 
 ## 🗓️ Alcance
 
@@ -28,12 +28,12 @@ Crear una aplicación web que permita a usuarios publicar y leer notas con un "s
 
 - **Haz un fork** de este repositorio y trabaja desde ahí.
 - El código del **frontend** debe vivir en el folder `website/`.
-- Puedes implementar el **backend** directamente en la consola de AWS (AppSync, DynamoDB y Amplify) o usar **CDK** para definirlo como infraestructura como código (IaC).
+- Puedes implementar el **backend** directamente en la consola de AWS (AppSync, DynamoDB y Amplify) o usar **CDK** para definirlo como infraestructura como código (IaC) en el folder `backend/`.
 - La aplicación debe estar desplegada en producción con **Amplify**.
 
 ## 🖥️ Requisitos funcionales (obligatorios)
 
-Tu aplicación debe permitir:
+La aplicación debe permitir:
 
 1. **Crear una nota** con:
    - Texto libre
@@ -45,51 +45,50 @@ Tu aplicación debe permitir:
    - Mostrar la fecha de creación de la nota
 
 3. **Despliegue**:
-   - La aplicación debe estar **en producción**.
-   - Comparte el URL de la página web y el fork del repositorio con la persona que te contactó
+   - La aplicación debe estar **en producción**
 
 ## ⚙️ Requisitos técnicos (obligatorios)
 
 - **Frontend**: React con Next.js y Tailwind CSS
-- **API**: AppSync con GraphQL
+- **API**: GraphQL sobre AppSync
 - **Base de datos**: DynamoDB
 - **Hosting**: Amplify
 
 ### 🔧 Esquema esperado de GraphQL
 
 ```graphql
-enum Sentimiento {
-  feliz
-  triste
+enum Sentiment {
+  happy
+  sad
   neutral
-  enojado
+  angry
 }
 
-type Nota {
+type Note {
   id: ID!
-  texto: String!
-  sentimiento: Sentimiento!
-  fechaCreacion: AWSDateTime!
+  text: String!
+  sentiment: Sentiment!
+  dateCreated: AWSDateTime!
+}
+
+type NoteQueryResults {
+  items: [Note]
+  nextToken: String
+  scannedCount: Int
 }
 
 type Query {
-  getNotes(sentimiento: Sentimiento, limit: Int, nextToken: String): NotaConnection
+  getNotes(sentiment: Sentiment, limit: Int, nextToken: String): NoteQueryResults
 }
 
 type Mutation {
-  crearNota(texto: String!, sentimiento: String!): Nota
-}
-
-type NotaConnection {
-  items: [Nota]
-  nextToken: String
-  scannedCount: Int
+  createNote(text: String!, sentiment: Sentiment!): Note
 }
 ```
 
 ## 🏆 Extras (opcionales)
 
-Hay dos entregables opcionales que puedes hacer para mejorar tu puntuación y demostrar tus habilidades.
+Hay dos entregables opcionales que puedes hacer para demostrar habilidades excepcionales.
 
 ### 📊 Notebook de analítica
 
@@ -108,15 +107,13 @@ Utiliza CDK para crear el backend de la aplicación dentro del folder `backend/`
 
 1. URL de la aplicación en producción (AWS Amplify)
 2. Enlace al repositorio con tu fork
-3. Instrucciones claras para correr el proyecto localmente
-4. (Opcional) Notebook con analítica
-5. (Opcional) Infraestructura como código
+3. (Opcional) Notebook con analítica
+4. (Opcional) Infraestructura como código
 
 ## 🧠 Qué evaluaremos
 
-- Funcionamiento de la aplicación
+- Funcionamiento y calidad visual de la aplicación
 - Claridad del código y estructura del proyecto
-- Calidad visual del frontend
 - Uso correcto de AWS y el stack propuesto
 - Autonomía para aprender nuevas tecnologías (GraphQL, DynamoDB, CDK, etcétera)
 - Buenas prácticas de versionado con Git y GitHub
