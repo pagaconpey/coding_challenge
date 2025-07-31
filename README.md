@@ -37,7 +37,7 @@ La aplicación debe permitir:
 
 1. **Crear una nota** con:
    - Texto libre
-   - Un sentimiento: `feliz`, `triste`, `neutral`, `enojado`
+   - Un sentimiento: `happy`, `sad`, `neutral`, `angry`
 
 2. **Visualizar notas existentes**:
    - Mostrar las notas paginadas en bloques de 10
@@ -49,10 +49,10 @@ La aplicación debe permitir:
 
 ## ⚙️ Requisitos técnicos (obligatorios)
 
-- **Frontend**: React con Next.js y Tailwind CSS
-- **API**: GraphQL sobre AppSync
-- **Base de datos**: DynamoDB
-- **Hosting**: Amplify
+- **Frontend**: [React](https://react.dev/) con [Next.js](https://nextjs.org/) y [Tailwind CSS](https://tailwindcss.com/)
+- **API**: [GraphQL](https://aws.amazon.com/graphql/) sobre [AppSync](https://aws.amazon.com/appsync/)
+- **Base de datos**: [DynamoDB](https://aws.amazon.com/dynamodb/)
+- **Hosting**: [Amplify](https://aws.amazon.com/amplify/hosting/)
 
 ### 🔧 Esquema esperado de GraphQL
 
@@ -85,6 +85,8 @@ type Mutation {
   createNote(text: String!, sentiment: Sentiment!): Note
 }
 ```
+
+> Te recomendamos que utilices [ULID](https://github.com/ulid/spec) para generar los IDs de las notas. Esto va a ser útil para filtrar los resultados en base a tiempo.
 
 ## 🏆 Extras (opcionales)
 
