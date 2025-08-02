@@ -2,7 +2,7 @@
 
 export default function TextInputIcon({placeholder} : {placeholder: string}) {
     return (
-        <label className="input input-lg px-4 py-3 text-lg flex items-center gap-3 w-full max-w-md sm:max-w-lg">
+        <label className="input input-lg px-4 py-3 shadow-md text-lg flex items-center gap-3 w-full max-w-md sm:max-w-lg">
             <svg
                 className="h-[1em] opacity-50"
                 xmlns="http://www.w3.org/2000/svg"
