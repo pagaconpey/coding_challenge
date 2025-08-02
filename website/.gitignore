@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/src/mock_data
 
 # next.js
 /.next/
