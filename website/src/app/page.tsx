@@ -1,7 +1,9 @@
-
+import TextInputIcon from "@/components/ui/textInputIcon";
 
 export default function Home() {
   return (
-    <>Test color theme</>
+    <>
+      <TextInputIcon placeholder="Escribe una nueva nota..."/>
+    </>
   );
 }
