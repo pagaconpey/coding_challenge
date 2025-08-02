@@ -5,17 +5,16 @@ import TextArea from "@/components/ui/textArea";
 import GhostTextInput from "@/components/ui/ghostTextInput";
 import GhostTextArea from "@/components/ui/ghostTextArea";
 import NoteFormCard from "@/components/blocks/noteFormCard";
+import SelectSentiment from "@/components/ui/selectSentiment";
+import HorizontalCenter from "@/components/layout/horizontalCenter";
 
 export default function Home() {
   return (
     <>
-      {/* <TextInputIcon placeholder="Escribe una nueva nota..." />
-      <TextArea placeholder="Escribe una nueva nota..." rows={12} />
-      <GhostTextInput placeholder="Tomala pum xd!" />
-      <GhostTextArea placeholder="Test to test" rows={12}/>
-      <GridNotes notes={mockNotes} /> */}
-
-        <NoteFormCard/>
+      <HorizontalCenter className="mt-10">
+        <NoteFormCard />
+      </HorizontalCenter>
+      {/* <GridNotes notes={mockNotes} /> */}
     </>
   );
 }
