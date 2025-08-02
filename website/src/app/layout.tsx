@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/layout/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar
+          brand="Penmark"
+          navItems={[
+            { label: "Github", href: "https://github.com/RazFernandez" },
+            { label: "LinkedIn", href: "https://linkedin.com/in/mrjfernandez" },
+            { label: "Portfolio", href: "https://miguel-portfolio-web-fawn.vercel.app/portfolio" },
+          ]}
+        />
         {children}
       </body>
     </html>
