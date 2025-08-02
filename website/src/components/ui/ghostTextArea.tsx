@@ -9,7 +9,7 @@ export default function GhostTextArea({
 }: GhostTextAreaProps) {
     return (
         <textarea
-            className="textarea textarea-ghost textarea-lg text-lg px-4 py-3 w-full max-w-md sm:max-w-lg resize-none focus:outline-none focus:ring-0"
+            className="textarea textarea-ghost textarea-lg text-lg px-4 py-3 w-full max-w-md sm:max-w-lg resize-none focus:outline-none focus:ring-0 focus:bg-transparent bg-transparent"
             placeholder={placeholder}
             rows={rows}
         />
