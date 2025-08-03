@@ -30,7 +30,7 @@ export default async function NotesPage() {
     const sortedNotes: NoteCardProps[] = sortNotesByDateDescending(notes);
         
     return (
-        <HorizontalCenter className="pt-8">
+        <HorizontalCenter className="pt-8 pb-16">
             <GridNotes notes={sortedNotes} />
         </HorizontalCenter>
     );
