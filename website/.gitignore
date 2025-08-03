@@ -89,3 +89,32 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# --- Seguridad AWS/Amplify/CDK ---
+# Ignora archivos de configuración y salidas automáticas
+aws-exports.js
+aws-exports.*
+!aws-exports.example.js
+amplify/
+amplifyconfiguration.json
+amplifyconfiguration.*
+!aws-exports.example.js
+!amplifyconfiguration.example.json
+# DynamoDB local
+*.dynamodb/
+# Amplify CLI local config
+amplify/.config/
+# Node/npm
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log*
+# --- Fin seguridad ---
+
+# --- Archivos de sistema macOS ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+# --- Fin macOS ---
