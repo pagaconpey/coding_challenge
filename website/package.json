@@ -11,10 +11,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.9",
     "daisyui": "^5.0.50",
+    "graphql": "^16.11.0",
     "next": "15.4.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "ulid": "^3.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
