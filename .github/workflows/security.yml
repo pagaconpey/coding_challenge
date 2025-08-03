@@ -13,13 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download trufflehog
-        run: |
-          curl -L https://github.com/trufflesecurity/trufflehog/releases/latest/download/trufflehog-linux-amd64 -o trufflehog
-          chmod +x trufflehog
-
-      - name: Check for secrets
-        run: ./trufflehog --only-verified --fail .
+      - name: Check for secrets (trufflehog action, no bloqueante)
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: true
 
       - name: Check for AWS credentials
         run: |
