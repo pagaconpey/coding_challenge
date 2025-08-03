@@ -1,0 +1,32 @@
+enum Sentiment {
+  happy
+  sad
+  neutral
+  angry
+}
+
+type Note {
+  id: ID!
+  text: String!
+  sentiment: Sentiment!
+  dateCreated: AWSDateTime!
+}
+
+type NoteQueryResults {
+  items: [Note]
+  nextToken: String
+  scannedCount: Int
+}
+
+type Query {
+  getNotes(sentiment: Sentiment, limit: Int, nextToken: String): NoteQueryResults
+}
+
+type Mutation {
+  createNote(text: String!, sentiment: Sentiment!): Note
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+} 
