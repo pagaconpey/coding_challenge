@@ -9,9 +9,13 @@ export default function SentimentFilterSelector() {
     const [sentiment, setSentiment] = useState<Sentiment>("All");
 
     return (
-        <>
-            <p>Filtrar por sentimiento: </p>
-            <SelectSentiment value={sentiment} onChange={setSentiment} options={ SENTIMENT_OPTIONS_WITH_ALL } />
-        </>
+        <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4">
+            <p className="text-sm font-medium">Filtrar por sentimiento:</p>
+            <SelectSentiment
+                value={sentiment}
+                onChange={setSentiment}
+                options={SENTIMENT_OPTIONS_WITH_ALL}
+            />
+        </div>
     );
 }

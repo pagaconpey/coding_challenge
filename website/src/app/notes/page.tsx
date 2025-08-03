@@ -1,11 +1,12 @@
 
-import GridNotes from "@/components/layout/gridNotes"
-import HorizontalCenter from "@/components/layout/horizontalCenter"
 import { createApolloSSRClient } from "@/lib/apolloSSRClient"
 import { GET_ALL_NOTES } from "@/lib/graphql/getAllNotes"
 import { NoteCardProps } from "@/components/blocks/noteCard"
 import { sortNotesByDateDescending } from "@/utils/sortByDateNotes"
-import SentimentFilterSelector from "@/components/blocks/sentimentFilterSelector"
+
+
+import YourNotesSection from "@/components/blocks/yourNotesSection"
+
 
 export default async function NotesPage() {
     const client = createApolloSSRClient();
@@ -32,10 +33,7 @@ export default async function NotesPage() {
         
     return (
         <>
-            <SentimentFilterSelector></SentimentFilterSelector>
-            <HorizontalCenter className="pt-8 pb-16">
-            <GridNotes notes={sortedNotes} />
-            </HorizontalCenter>
+            <YourNotesSection sortedNotes={sortedNotes}/>
         </>
     );
 }
