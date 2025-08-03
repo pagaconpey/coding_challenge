@@ -13,10 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check for secrets
+      - name: Download trufflehog
         run: |
-          pip install --upgrade "trufflehog>=3.0.0"
-          trufflehog --only-verified --fail .
+          curl -L https://github.com/trufflesecurity/trufflehog/releases/latest/download/trufflehog-linux-amd64 -o trufflehog
+          chmod +x trufflehog
+
+      - name: Check for secrets
+        run: ./trufflehog --only-verified --fail .
 
       - name: Check for AWS credentials
         run: |
