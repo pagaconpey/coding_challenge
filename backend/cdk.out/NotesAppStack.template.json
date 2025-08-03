@@ -1,0 +1,291 @@
+{
+ "Resources": {
+  "NotesTableD0D0D2F1": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "dateCreated",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "dateCreated",
+      "KeyType": "RANGE"
+     }
+    ],
+    "TableName": "Notes"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesTable/Resource"
+   }
+  },
+  "NotesAPIAA73EE2D": {
+   "Type": "AWS::AppSync::GraphQLApi",
+   "Properties": {
+    "AuthenticationType": "API_KEY",
+    "Name": "notes-api",
+    "XrayEnabled": true
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/Resource"
+   }
+  },
+  "NotesAPISchema4A778012": {
+   "Type": "AWS::AppSync::GraphQLSchema",
+   "Properties": {
+    "ApiId": {
+     "Fn::GetAtt": [
+      "NotesAPIAA73EE2D",
+      "ApiId"
+     ]
+    },
+    "Definition": "enum Sentiment {\n  happy\n  sad\n  neutral\n  angry\n}\n\ntype Note {\n  id: ID!\n  text: String!\n  sentiment: Sentiment!\n  dateCreated: AWSDateTime!\n}\n\ntype NoteQueryResults {\n  items: [Note]\n  nextToken: String\n  scannedCount: Int\n}\n\ntype Query {\n  getNotes(sentiment: Sentiment, limit: Int, nextToken: String): NoteQueryResults\n}\n\ntype Mutation {\n  createNote(text: String!, sentiment: Sentiment!): Note\n}\n\nschema {\n  query: Query\n  mutation: Mutation\n} "
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/Schema"
+   }
+  },
+  "NotesAPIDefaultApiKey70C755C2": {
+   "Type": "AWS::AppSync::ApiKey",
+   "Properties": {
+    "ApiId": {
+     "Fn::GetAtt": [
+      "NotesAPIAA73EE2D",
+      "ApiId"
+     ]
+    }
+   },
+   "DependsOn": [
+    "NotesAPISchema4A778012"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/DefaultApiKey"
+   }
+  },
+  "NotesAPINotesDataSourceServiceRoleE5F2E760": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "appsync.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/NotesDataSource/ServiceRole/Resource"
+   }
+  },
+  "NotesAPINotesDataSourceServiceRoleDefaultPolicyDED89368": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "NotesTableD0D0D2F1",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "NotesAPINotesDataSourceServiceRoleDefaultPolicyDED89368",
+    "Roles": [
+     {
+      "Ref": "NotesAPINotesDataSourceServiceRoleE5F2E760"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/NotesDataSource/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "NotesAPINotesDataSource780CE2E8": {
+   "Type": "AWS::AppSync::DataSource",
+   "Properties": {
+    "ApiId": {
+     "Fn::GetAtt": [
+      "NotesAPIAA73EE2D",
+      "ApiId"
+     ]
+    },
+    "DynamoDBConfig": {
+     "AwsRegion": "us-east-1",
+     "TableName": {
+      "Ref": "NotesTableD0D0D2F1"
+     }
+    },
+    "Name": "NotesDataSource",
+    "ServiceRoleArn": {
+     "Fn::GetAtt": [
+      "NotesAPINotesDataSourceServiceRoleE5F2E760",
+      "Arn"
+     ]
+    },
+    "Type": "AMAZON_DYNAMODB"
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/NotesDataSource/Resource"
+   }
+  },
+  "NotesAPICreateNoteResolver4D417F0E": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Fn::GetAtt": [
+      "NotesAPIAA73EE2D",
+      "ApiId"
+     ]
+    },
+    "DataSourceName": "NotesDataSource",
+    "FieldName": "createNote",
+    "Kind": "UNIT",
+    "RequestMappingTemplate": "\n                {\n                    \"version\": \"2017-02-28\",\n                    \"operation\": \"PutItem\",\n                    \"key\": {\n                        \"id\": $util.dynamodb.toDynamoDBJson($util.autoId()),\n                        \"dateCreated\": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())\n                    },\n                    \"attributeValues\": {\n                        \"text\": $util.dynamodb.toDynamoDBJson($ctx.args.text),\n                        \"sentiment\": $util.dynamodb.toDynamoDBJson($ctx.args.sentiment)\n                    }\n                }\n            ",
+    "ResponseMappingTemplate": "\n                $util.toJson($ctx.result)\n            ",
+    "TypeName": "Mutation"
+   },
+   "DependsOn": [
+    "NotesAPINotesDataSource780CE2E8",
+    "NotesAPISchema4A778012"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/CreateNoteResolver/Resource"
+   }
+  },
+  "NotesAPIGetNotesResolverEB464BA1": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Fn::GetAtt": [
+      "NotesAPIAA73EE2D",
+      "ApiId"
+     ]
+    },
+    "DataSourceName": "NotesDataSource",
+    "FieldName": "getNotes",
+    "Kind": "UNIT",
+    "RequestMappingTemplate": "\n                {\n                    \"version\": \"2017-02-28\",\n                    \"operation\": \"Query\",\n                    \"limit\": $util.defaultIfNull($ctx.args.limit, 10),\n                    #if($ctx.args.nextToken)\n                        \"nextToken\": \"$ctx.args.nextToken\",\n                    #end\n                    #if($ctx.args.sentiment)\n                        \"filter\": {\n                            \"sentiment\": {\n                                \"eq\": \"$ctx.args.sentiment\"\n                            }\n                        }\n                    #end\n                }\n            ",
+    "ResponseMappingTemplate": "\n                {\n                    \"items\": $util.toJson($ctx.result.items),\n                    \"nextToken\": $util.toJson($util.defaultIfNull($ctx.result.nextToken, null)),\n                    \"scannedCount\": $util.toJson($ctx.result.scannedCount)\n                }\n            ",
+    "TypeName": "Query"
+   },
+   "DependsOn": [
+    "NotesAPINotesDataSource780CE2E8",
+    "NotesAPISchema4A778012"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/NotesAPI/GetNotesResolver/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOwQrCMBBEv6X3dK3Vg1ex4EFBbb3LNo00Nk1ikyoh5N+lKYKeZt4sO0wOebaBLMG3SWnTpYLX4CuLtCP4NjffOIm9amrwV6wFI7u7jCYQ1No4ScHvB9TtU2w1n66RLsd/qmjLepyCreYH5kgRa4u6QIuVGgcam3+oZEaJFxum+OsD4diDL9W8I+pZCU7dhLMLIb5+G0+j1aMN5Oxsq+RiBcslrJOH4TwdRml5z6Cc9QPlzz7ECQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "NotesAppStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "GraphQLAPIURL": {
+   "Description": "GraphQL API URL",
+   "Value": {
+    "Fn::GetAtt": [
+     "NotesAPIAA73EE2D",
+     "GraphQLUrl"
+    ]
+   }
+  },
+  "GraphQLAPIKey": {
+   "Description": "GraphQL API Key",
+   "Value": {
+    "Fn::GetAtt": [
+     "NotesAPIDefaultApiKey70C755C2",
+     "ApiKey"
+    ]
+   }
+  },
+  "DynamoDBTableName": {
+   "Description": "DynamoDB Table Name",
+   "Value": {
+    "Ref": "NotesTableD0D0D2F1"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
