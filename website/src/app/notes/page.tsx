@@ -5,6 +5,7 @@ import { createApolloSSRClient } from "@/lib/apolloSSRClient"
 import { GET_ALL_NOTES } from "@/lib/graphql/getAllNotes"
 import { NoteCardProps } from "@/components/blocks/noteCard"
 import { sortNotesByDateDescending } from "@/utils/sortByDateNotes"
+import SentimentFilterSelector from "@/components/blocks/sentimentFilterSelector"
 
 export default async function NotesPage() {
     const client = createApolloSSRClient();
@@ -30,8 +31,11 @@ export default async function NotesPage() {
     const sortedNotes: NoteCardProps[] = sortNotesByDateDescending(notes);
         
     return (
-        <HorizontalCenter className="pt-8 pb-16">
+        <>
+            <SentimentFilterSelector></SentimentFilterSelector>
+            <HorizontalCenter className="pt-8 pb-16">
             <GridNotes notes={sortedNotes} />
-        </HorizontalCenter>
+            </HorizontalCenter>
+        </>
     );
 }
