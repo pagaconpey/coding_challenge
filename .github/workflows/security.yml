@@ -26,7 +26,7 @@ jobs:
 
       - name: Check for AWS exports
         run: |
-          if find . -name "aws-exports.*"; then
-            echo "❌ AWS exports files found"
+          if find . -name "aws-exports.*" ! -name "aws-exports.example.js" | grep .; then
+            echo "❌ AWS exports files found (except example)"
             exit 1
           fi
