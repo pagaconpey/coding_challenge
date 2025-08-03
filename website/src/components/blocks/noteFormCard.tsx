@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_NOTE } from "@/lib/graphql/mutations";
+import { Sentiment } from "@/types/sentiment";
+import { SENTIMENT_OPTIONS } from "@/types/select-options";
 import { ulid } from "ulid";
 
 import GhostTextArea from "../ui/ghostTextArea";
 import SelectSentiment from "../ui/selectSentiment";
 
-type Sentiment = "Happy" | "Neutral" | "Sad" | "Angry";
+
 
 export default function NoteFormCard() {
     const [noteText, setNoteText] = useState("");
@@ -58,7 +60,7 @@ export default function NoteFormCard() {
                     />
                 </div>
                 <div className="card-actions flex justify-between items-center mt-4 pt-2 border-t border-base-content/30">
-                    <SelectSentiment value={sentiment} onChange={setSentiment} />
+                    <SelectSentiment value={sentiment} onChange={setSentiment} options={SENTIMENT_OPTIONS}/>
                     <div className="flex gap-2">
                         <button
                             type="button"
