@@ -1,5 +1,0 @@
-{
-  "tableName": "Notes",
-  "partitionKeyName": "id",
-  "partitionKeyType": "S"
-}

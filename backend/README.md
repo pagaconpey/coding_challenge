@@ -66,3 +66,60 @@ cdk synth
 - **CloudFormation**: Gratis para stacks pequeños
 
 ¡Todo gratuito para desarrollo y uso personal! 
+
+## 🛡️ Archivos automáticos y seguridad
+
+### Instalación de Amplify CLI
+
+```bash
+npm install -g @aws-amplify/cli
+```
+O con yarn:
+```bash
+yarn global add @aws-amplify/cli
+```
+
+### Archivos que puedes borrar y regenerar
+
+Los siguientes archivos y carpetas **NO deben subirse al repositorio** porque se pueden regenerar automáticamente:
+
+- `backend/src/aws-exports.js`
+- `backend/src/amplifyconfiguration.json`
+- `backend/cdk.out/`
+
+#### ¿Cómo regenerarlos?
+
+1. **Regenerar archivos de configuración de Amplify:**
+
+   Si borras `aws-exports.js` o `amplifyconfiguration.json`, simplemente ejecuta:
+
+   ```bash
+   amplify pull
+   ```
+
+   Esto descargará la configuración actual de tu entorno Amplify y recreará los archivos necesarios.
+
+2. **Regenerar la carpeta `cdk.out/`:**
+
+   Si borras la carpeta `cdk.out/`, puedes regenerarla ejecutando:
+
+   ```bash
+   cdk synth
+   ```
+
+   Esto volverá a crear los artefactos necesarios para AWS CDK.
+
+### 🧹 Limpieza
+
+Si necesitas limpiar tu entorno local, puedes borrar estos archivos/carpeta sin problema:
+
+```bash
+rm -rf backend/src/aws-exports.js backend/src/amplifyconfiguration.json backend/cdk.out/
+```
+
+Luego, sigue los pasos anteriores para regenerarlos.
+
+### 🔒 Notas de seguridad
+
+- **Nunca subas** archivos reales de configuración (`aws-exports.js`, `amplifyconfiguration.json`) ni la carpeta `cdk.out/` al repositorio.
+- Usa los archivos de ejemplo (`aws-exports.example.js`) para compartir la estructura sin exponer datos sensibles. 
