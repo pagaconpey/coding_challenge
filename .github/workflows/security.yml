@@ -15,7 +15,7 @@ jobs:
 
       - name: Check for secrets
         run: |
-          pip install --upgrade trufflehog
+          pip install --upgrade "trufflehog>=3.0.0"
           trufflehog --only-verified --fail .
 
       - name: Check for AWS credentials
