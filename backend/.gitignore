@@ -95,3 +95,10 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+
+# macOS
+.DS_Store
+
+# Instaladores y binarios
+*.pkg

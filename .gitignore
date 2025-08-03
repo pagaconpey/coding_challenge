@@ -154,3 +154,9 @@ cdk.context.json
 # Security
 .secret-*
 **/.secret-* 
+
+# macOS
+.DS_Store
+
+# Instaladores y binarios
+*.pkg
