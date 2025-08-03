@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check for secrets
-        uses: trufflesecurity/trufflehog@main
-        with:
-          args: --only-verified --fail
+        run: |
+          pip install trufflehog
+          trufflehog --only-verified --fail .
 
       - name: Check for AWS credentials
         run: |
