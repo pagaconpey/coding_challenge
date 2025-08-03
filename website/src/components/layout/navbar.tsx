@@ -1,3 +1,7 @@
+'use client'
+
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface NavItem {
     label: string;
@@ -15,13 +19,13 @@ export default function Navbar({ brand, navItems }: NavbarProps) {
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="flex-1">
-                <a className="btn btn-ghost sm:text-2xl">{brand}</a>
+                <Link className="btn btn-ghost sm:text-2xl" href="/">{brand}</Link>
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1 sm:text-lg">
                     {navItems.map((item, index) => (
                         <li key={index}>
-                            <a href={item.href}>{item.label}</a>
+                            <Link href={item.href}>{item.label}</Link>
                         </li>
                     ))}
                 </ul>
