@@ -1,0 +1,29 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Backend ya configurado con Amplify CLI"
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - ls -la
+        - pwd
+        - cd website && npm ci
+    build:
+      commands:
+        - cd website && npm run build
+  artifacts:
+    baseDirectory: website/.next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - website/node_modules/**/*
+      - website/.next/cache/**/*
+env:
+  variables:
+    NEXT_PUBLIC_APPSYNC_API_URL: $NEXT_PUBLIC_APPSYNC_API_URL
+    NEXT_PUBLIC_APPSYNC_REGION: $NEXT_PUBLIC_APPSYNC_REGION
+    NEXT_PUBLIC_APPSYNC_API_KEY: $NEXT_PUBLIC_APPSYNC_API_KEY
