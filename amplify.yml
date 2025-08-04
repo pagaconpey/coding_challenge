@@ -22,8 +22,7 @@ frontend:
     build:
       commands:
         - echo "🚀 Build:"
-        - cd website
-        - npm run build
+        - cd website && npm run build
   artifacts:
     baseDirectory: website/.next
     files:
