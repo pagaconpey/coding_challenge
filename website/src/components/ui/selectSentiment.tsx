@@ -1,11 +1,8 @@
-type Sentiment = "Happy" | "Sad" | "Neutral" | "Angry";
+import { SelectOption } from "@/types/select-types";
+import { Sentiment } from "@/types/sentiment";
+import { SelectSentimentProps } from "@/types/select-types";
 
-interface SelectSentimentProps {
-    value: Sentiment;
-    onChange: (value: Sentiment) => void;
-}
-
-export default function SelectSentiment({value, onChange,}: SelectSentimentProps) {
+export default function SelectSentiment({value, onChange, options,}: SelectSentimentProps<Sentiment>) {
     return (
         <select
             value={value}
@@ -13,10 +10,11 @@ export default function SelectSentiment({value, onChange,}: SelectSentimentProps
             className="select select-bordered select-sm"
         >
             <option disabled>Sentimiento</option>
-            <option value="Happy">😊 Feliz</option>
-            <option value="Sad">😢 Triste</option>
-            <option value="Neutral">😐 Neutral</option>
-            <option value="Angry">😠 Enojado</option>
+            {options.map((opt: SelectOption<string>) => (
+                <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                </option>
+            ))}
         </select>
     );
 }

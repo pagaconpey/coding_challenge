@@ -36,9 +36,7 @@ export default function RootLayout({
           <Navbar
             brand="Penmark"
             navItems={[
-              { label: "Github", href: "https://github.com/RazFernandez" },
-              { label: "LinkedIn", href: "https://linkedin.com/in/mrjfernandez" },
-              { label: "Portfolio", href: "https://miguel-portfolio-web-fawn.vercel.app/portfolio" },
+              { label: "Ver Notas", href: "/notes" },
             ]}
           />
           {children}
