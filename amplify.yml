@@ -8,18 +8,20 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - ls -la
+        - pwd
+        - cd website && npm ci
     build:
       commands:
-        - npm run build
+        - cd website && npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: website/.next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
-      - .next/cache/**/*
+      - website/node_modules/**/*
+      - website/.next/cache/**/*
 env:
   variables:
     NEXT_PUBLIC_APPSYNC_API_URL: $NEXT_PUBLIC_APPSYNC_API_URL
