@@ -31,7 +31,6 @@ export const listNotesQuery = /* GraphQL */ `
         updatedAt
       }
       nextToken
-      scannedCount
     }
   }
 `;
