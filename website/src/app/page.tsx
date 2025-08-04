@@ -1,12 +1,11 @@
-'use client';
+// website/src/app/page.tsx
+"use client";
 
-import { useState } from "react";
-import NoteForm from "../components/NoteForm";
-import NoteList from "../components/NoteList";
+import NoteForm from "./components/NoteForm";
+import NotesList from "./components/NoteList";
 
-export default function Home() {
-  const [reload, setReload] = useState(0);
 
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-4xl mx-auto py-8 px-4">
@@ -14,9 +13,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-800 mb-2">
             📓 Mis Notas con Sentimiento
           </h1>
-          <p className="text-gray-600">
-            Guarda tus pensamientos y emociones en un solo lugar
-          </p>
+          <p className="text-gray-600">Guarda tus pensamientos y emociones</p>
         </header>
 
         <div className="grid gap-8 lg:grid-cols-2">
@@ -24,16 +21,14 @@ export default function Home() {
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Crear Nueva Nota
             </h2>
-            <NoteForm onCreate={() => setReload(reload + 1)} />
+            <NoteForm />
           </div>
-          
+
           <div className="lg:order-2">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Tus Notas
             </h2>
-            <div className="bg-white rounded-lg shadow-sm">
-              <NoteList reload={reload} />
-            </div>
+            <NotesList />
           </div>
         </div>
 

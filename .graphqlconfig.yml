@@ -1,0 +1,12 @@
+projects:
+  codingchallenge:
+    schemaPath: website/src/graphql/schema.json
+    includes:
+      - website/src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: website/src/API.ts
+        docsFilePath: website/src/graphql

@@ -1,0 +1,13 @@
+enum Sentiment {
+  happy
+  sad
+  neutral
+  angry
+}
+
+type Note @model {
+  id: ID!
+  text: String!
+  sentiment: Sentiment!
+  dateCreated: AWSDateTime!
+}

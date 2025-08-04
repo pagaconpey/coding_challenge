@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import aws_cdk as cdk
 from aws_cdk import (
     Stack,
@@ -19,11 +18,11 @@ class NotesAppStack(Stack):
             self, "NotesTable",
             table_name="Notes",
             partition_key=dynamodb.Attribute(
-                name="id", 
+                name="id",
                 type=dynamodb.AttributeType.STRING
             ),
             sort_key=dynamodb.Attribute(
-                name="dateCreated", 
+                name="dateCreated",
                 type=dynamodb.AttributeType.STRING
             ),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
@@ -45,11 +44,13 @@ class NotesAppStack(Stack):
 
         # DynamoDB Data Source
         notes_data_source = api.add_dynamo_db_data_source(
-            "NotesDataSource", 
+            "NotesDataSource",
             notes_table
         )
 
-        # Create Note Resolver
+        # -------------------
+        # Create Note Resolver (Mutation)
+        # -------------------
         notes_data_source.create_resolver(
             "CreateNoteResolver",
             type_name="Mutation",
@@ -73,7 +74,9 @@ class NotesAppStack(Stack):
             """),
         )
 
-        # Get Notes Resolver
+        # -------------------
+        # Get Notes Resolver (Query)
+        # -------------------
         notes_data_source.create_resolver(
             "GetNotesResolver",
             type_name="Query",
@@ -137,4 +140,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()
