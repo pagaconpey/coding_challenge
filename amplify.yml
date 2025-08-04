@@ -20,11 +20,9 @@ frontend:
         - npm --version
         - echo "🔍 Limpiando cache npm:"
         - npm cache clean --force
-        - echo "🔍 === INSTALL + BUILD TODO EN PREBUILD ==="
-        - echo "📦 Cambiando a website e instalando:"
-        - cd website && npm install --legacy-peer-deps --no-audit --no-fund
-        - echo "🚀 Haciendo build en la misma sesión:"
-        - cd website && npm run build
+        - echo "🔍 === INSTALL + BUILD EN UNA SOLA LÍNEA ==="
+        - echo "🚀 Ejecutando install && build sin separar comandos:"
+        - cd website && npm install --legacy-peer-deps --no-audit --no-fund && npm run build
         - echo "✅ Verificando build output:"
         - cd website && ls -la .next/ || echo "❌ .next/ no encontrado"
     build:
