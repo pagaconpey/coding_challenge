@@ -15,34 +15,33 @@ logs/
 *.tmp
 *.temp
 
-# Amplify local y temporales (no subir)
-amplify/#current-cloud-backend
-amplify/backend/amplify-meta.json
-amplify/backend/.temp
 
-# Versionar archivos config importantes de backend
-!amplify/backend/backend-config.json
-!amplify/team-provider-info.json
-!amplify/.config/local-aws-info.json
-!amplify/.config/local-env-info.json
-amplify/\#current-cloud-backend
-amplify/.config/local-*
-amplify/logs
-amplify/mock-data
-amplify/mock-api-resources
-amplify/backend/amplify-meta.json
-amplify/backend/.temp
-build/
-dist/
-node_modules/
-awsconfiguration.json
+# --- AWS Amplify (Generados y Locales - NO SUBIR) ---
+# Ignora toda la carpeta 'amplify/' por defecto
+amplify/
+
+# Excepciones: Archivos de configuración de Amplify que SÍ deben versionarse
+# Son necesarios para compartir la configuración del proyecto entre desarrolladores
+# y para que Amplify Console sepa cómo desplegar el backend.
+!amplify/.config/local-aws-info.json     # Información del perfil AWS local
+!amplify/.config/local-env-info.json     # Información del entorno local (nombre del entorno, etc.)
+!amplify/backend/backend-config.json     # La definición de tus recursos de backend (API, Auth, Storage)
+!amplify/team-provider-info.json         # Mapeo de entornos a cuentas AWS
+
+# Otros archivos generados por Amplify que NUNCA deben subirse
+# Aunque 'amplify/' ya los ignora, estas reglas son más específicas por seguridad.
+amplify/#current-cloud-backend/
+amplify/backend/.temp/
+amplify/logs/
+amplify/mock-data/
+amplify/mock-api-resources/
+amplify/backend/amplify-meta.json        # Archivo de metadatos de despliegue
+amplify-build-config.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
-amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
-**.sample
 
 # AWS CLI credenciales y configs
 .aws/
