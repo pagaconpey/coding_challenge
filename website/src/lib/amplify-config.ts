@@ -1,3 +1,9 @@
+// Debug: verificar variables de entorno antes de crear config
+console.log('🔧 DEBUG amplify-config.ts:');
+console.log('🔧 NEXT_PUBLIC_APPSYNC_API_URL:', process.env.NEXT_PUBLIC_APPSYNC_API_URL);
+console.log('🔧 NEXT_PUBLIC_APPSYNC_REGION:', process.env.NEXT_PUBLIC_APPSYNC_REGION);
+console.log('🔧 NEXT_PUBLIC_APPSYNC_API_KEY:', process.env.NEXT_PUBLIC_APPSYNC_API_KEY);
+
 const config = {
   aws_project_region: process.env.NEXT_PUBLIC_APPSYNC_REGION || "us-east-1",
   aws_appsync_graphqlEndpoint:
