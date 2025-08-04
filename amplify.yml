@@ -8,28 +8,18 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "🔍 === DEBUG DESDE RAÍZ DEL PROYECTO ==="
+        - echo "🔍 === INSTALACIÓN DESDE RAÍZ ==="
         - pwd
         - ls -la
-        - echo "🔍 Verificando directorio website:"
-        - ls -la website/
-        - echo "🔍 Verificando package.json en website:"
-        - ls -la website/package.json
-        - echo "🔍 Verificando Node/npm:"
-        - node --version
-        - npm --version
-        - echo "🔍 Limpiando cache npm:"
-        - npm cache clean --force
-        - echo "🔍 === INSTALL + BUILD EN UNA SOLA LÍNEA ==="
-        - echo "🚀 Ejecutando install && build sin separar comandos:"
-        - cd website && npm install --legacy-peer-deps --no-audit --no-fund && npm run build
-        - echo "✅ Verificando build output:"
-        - cd website && ls -la .next/ || echo "❌ .next/ no encontrado"
+        - cd website
+        - npm install --legacy-peer-deps --no-audit --no-fund
     build:
       commands:
-        - echo "✅ === BUILD YA COMPLETADO EN PREBUILD ==="
-        - echo "📁 Solo verificando que existan los artifacts:"
-        - cd website && ls -la .next/ || echo "⚠️ .next/ no encontrado, pero puede ser normal"
+        - echo "🚀 === BUILD DESDE WEBSITE ==="
+        - cd website
+        - npm run build
+        - echo "✅ Verificando artifacts:"
+        - ls -la .next/
   artifacts:
     baseDirectory: website/.next
     files:
