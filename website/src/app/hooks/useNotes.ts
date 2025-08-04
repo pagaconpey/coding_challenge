@@ -80,23 +80,24 @@ export function useNotes() {
         let errorMessage = "Error desconocido";
 
         if (error && typeof error === "object") {
+          const errorObj = error as Record<string, unknown>;
           // Error de GraphQL
-          if ("errors" in error && Array.isArray((error as any).errors)) {
-            errorMessage = (error as any).errors
-              .map((e: any) => e.message)
+          if ("errors" in errorObj && Array.isArray(errorObj.errors)) {
+            errorMessage = (errorObj.errors as Array<{ message: string }>)
+              .map((e) => e.message)
               .join(", ");
           }
           // Error de AWS Amplify
-          else if ("message" in error) {
-            errorMessage = (error as any).message;
+          else if ("message" in errorObj && typeof errorObj.message === "string") {
+            errorMessage = errorObj.message;
           }
           // Error con propiedad error
-          else if ("error" in error && (error as any).error?.message) {
-            errorMessage = (error as any).error.message;
+          else if ("error" in errorObj && errorObj.error && typeof errorObj.error === "object" && "message" in errorObj.error) {
+            errorMessage = (errorObj.error as { message: string }).message;
           }
           // Cualquier propiedad message anidada
-          else if ((error as any).data?.message) {
-            errorMessage = (error as any).data.message;
+          else if ("data" in errorObj && errorObj.data && typeof errorObj.data === "object" && "message" in errorObj.data) {
+            errorMessage = (errorObj.data as { message: string }).message;
           }
         }
 
@@ -114,7 +115,7 @@ export function useNotes() {
     setNotes([]);
     setNextToken(null);
     loadNotes(null, filterSentiment);
-  }, [reloadTrigger]); // Removido filterSentiment para evitar peticiones innecesarias
+  }, [reloadTrigger, loadNotes, filterSentiment]); // Incluir todas las dependencias
 
   // Efecto separado para filtrar notas localmente sin peticiones al servidor
   useEffect(() => {
@@ -129,7 +130,7 @@ export function useNotes() {
       setNextToken(null);
       loadNotes(null, "");
     }
-  }, [filterSentiment]); // Solo cuando cambia el filtro
+  }, [filterSentiment, loadNotes]); // Incluir loadNotes como dependencia
 
   const reloadNotes = () => setReloadTrigger((prev) => prev + 1);
 
@@ -171,12 +172,12 @@ export function useNotes() {
       console.error("❌ Error stringified:", JSON.stringify(error, null, 2));
       console.error("❌ Error type:", typeof error);
       console.error("❌ Error constructor:", error?.constructor?.name);
-      console.error("❌ Error stack:", (error as any)?.stack);
+              console.error("❌ Error stack:", (error as Record<string, unknown>)?.stack);
 
       // Inspeccionar todas las propiedades del error
       if (error && typeof error === "object") {
         console.error("❌ Propiedades del error:");
-        for (const [key, value] of Object.entries(error)) {
+        for (const [key, value] of Object.entries(error as Record<string, unknown>)) {
           console.error(`❌   ${key}:`, value);
         }
       }
@@ -192,23 +193,24 @@ export function useNotes() {
       let errorMessage = "Error desconocido";
 
       if (error && typeof error === "object") {
+        const errorObj = error as Record<string, unknown>;
         // Error de GraphQL
-        if ("errors" in error && Array.isArray((error as any).errors)) {
-          errorMessage = (error as any).errors
-            .map((e: any) => e.message)
+        if ("errors" in errorObj && Array.isArray(errorObj.errors)) {
+          errorMessage = (errorObj.errors as Array<{ message: string }>)
+            .map((e) => e.message)
             .join(", ");
         }
         // Error de AWS Amplify
-        else if ("message" in error) {
-          errorMessage = (error as any).message;
+        else if ("message" in errorObj && typeof errorObj.message === "string") {
+          errorMessage = errorObj.message;
         }
         // Error con propiedad error
-        else if ("error" in error && (error as any).error?.message) {
-          errorMessage = (error as any).error.message;
+        else if ("error" in errorObj && errorObj.error && typeof errorObj.error === "object" && "message" in errorObj.error) {
+          errorMessage = (errorObj.error as { message: string }).message;
         }
         // Cualquier propiedad message anidada
-        else if ((error as any).data?.message) {
-          errorMessage = (error as any).data.message;
+        else if ("data" in errorObj && errorObj.data && typeof errorObj.data === "object" && "message" in errorObj.data) {
+          errorMessage = (errorObj.data as { message: string }).message;
         }
       }
 
