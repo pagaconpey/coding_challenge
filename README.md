@@ -1,231 +1,117 @@
-# 📝💜 Notas con Sentimiento - Coding Challenge
+# 📝💜 Notas con Sentimiento
 
-Una aplicación web completa para crear y gestionar notas con análisis de sentimientos, construida con la arquitectura moderna de AWS.
+App para crear notas con sentimientos. Hecha para un coding challenge en 2 días usando AWS.
 
-🌐 **Demo en producción:** [Ver aplicación](https://main.d[ID].amplifyapp.com)
-
----
-
-## 🎯 Acerca del Proyecto
-
-Esta aplicación fue desarrollada como parte de un coding challenge que evalúa habilidades técnicas fullstack con AWS. El objetivo: crear una solución completa en 2 días usando tecnologías modernas.
-
-### 🏆 Resultado
-✅ **Aplicación 100% funcional** desplegada en AWS Amplify  
-✅ **CRUD completo** para notas con sentimientos  
-✅ **UI moderna** con diseño morado y efectos glassmorphism  
-✅ **Arquitectura escalable** con GraphQL + DynamoDB  
+🌐 **Demo:** [Ver app funcionando](https://main.d6otbq3z6xa4f.amplifyapp.com)
 
 ---
 
-## 🧗 Mi Proceso de Aprendizaje
+## 🚀 Lo que logré
 
-### **📚 Día 1-1.5: Aprendizaje intensivo**
-- **DynamoDB + AppSync + GraphQL:** Primera vez conectando esta arquitectura
-- **AWS Amplify CLI:** Configuración completa de backend y hosting
-- **GraphQL Schema:** Diseño de tipos, queries y mutations
-
-### **🔄 Iteraciones del proyecto**
-Rehice el proyecto **3 veces** hasta lograr la conexión correcta:
-1. **Primer intento:** Problemas de autenticación GraphQL
-2. **Segundo intento:** Issues con variables de entorno
-3. **Versión final:** Arquitectura limpia y funcional
-
-### **🚀 Estrategia de deployment**
-- **Git workflow inicial:** Branches y PRs estructurados
-- **Pivot a main:** Por practicidad del deploy rápido (día 2)
-- **Commits directos:** Para iteración ágil con asistencia IA
+✅ App completa desplegada en AWS  
+✅ CRUD de notas con sentimientos (happy/sad/neutral/angry)  
+✅ UI moderna morada con glassmorphism  
+✅ GraphQL + DynamoDB funcionando  
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🧗 Mi experiencia
 
-### **Frontend**
-- ⚛️ **React 18** con Next.js 14 (App Router)
-- 🎨 **Tailwind CSS** con diseño responsive
-- 🔗 **AWS Amplify** para GraphQL client
-- 📱 **Glassmorphism UI** con gradientes morados
+**El challenge:** Aprender AWS stack en tiempo récord y entregar algo funcional.
 
-### **Backend**
-- 🔥 **AWS AppSync** (GraphQL API)
-- 💾 **DynamoDB** (Base de datos NoSQL)
-- 🔐 **API Key authentication**
-- 🏗️ **Amplify CLI** para IaC
+**La realidad:** Lo rehice 3 veces porque no lograba conectar GraphQL bien 😅
 
-### **DevOps**
-- ☁️ **AWS Amplify Hosting**
-- 🔄 **CI/CD automático** desde GitHub
-- 🌍 **CloudFront CDN** global
-- 📊 **Monorepo structure**
+1. **Intento 1:** Problemas de auth
+2. **Intento 2:** Variables de entorno mal
+3. **Intento 3:** ¡Por fin funcionó! 🎉
+
+**Plot twist:** Terminé haciendo todo en main porque necesitaba deploy rápido y no tenía tiempo para PRs perfectos.
 
 ---
 
-## 📦 Instalación y Setup
+## 🛠️ Stack
 
-### **Prerrequisitos**
+**Frontend:** React + Next.js + Tailwind  
+**Backend:** AWS AppSync (GraphQL) + DynamoDB  
+**Deploy:** AWS Amplify  
+**Design:** Tema morado porque... ¿por qué no? 💜
+
+---
+
+## 🏃‍♀️ Setup rápido
+
 ```bash
-# Node.js (v18+)
-node --version
-
-# AWS CLI
-aws --version
-
-# Amplify CLI
-npm install -g @aws-amplify/cli
-amplify --version
-```
-
-### **1. Clonar proyecto**
-```bash
+# Clona el repo
 git clone <tu-fork>
-cd coding_challenge
-```
+cd coding_challenge/website
 
-### **2. Configurar AWS**
-```bash
-# Configurar credenciales AWS
-aws configure
-
-# Inicializar Amplify (solo si es necesario)
-amplify init
-```
-
-### **3. Setup Frontend**
-```bash
-cd website
+# Instala dependencias
 npm install
-```
 
-### **4. Variables de entorno**
-```bash
-# Crear archivo de configuración
+# Configura env vars (necesitas tus credenciales AWS)
 cp .env.example .env
+# Agrega: NEXT_PUBLIC_APPSYNC_API_URL, etc.
 
-# Agregar tus credenciales AWS AppSync:
-NEXT_PUBLIC_APPSYNC_API_URL=tu_api_url
-NEXT_PUBLIC_APPSYNC_REGION=us-east-1
-NEXT_PUBLIC_APPSYNC_API_KEY=tu_api_key
-```
-
-### **5. Desarrollo local**
-```bash
+# Corre local
 npm run dev
-# Abre http://localhost:3000
 ```
 
-### **6. Deploy a AWS**
-```bash
-# Desde la raíz del proyecto
-git push origin main
-# Amplify detecta cambios automáticamente
+**Para deploy:** Push a main y AWS Amplify hace la magia ✨
+
+---
+
+## 💡 Lo que aprendí
+
+- **GraphQL:** No es tan scary como pensé
+- **DynamoDB:** NoSQL puede ser divertido
+- **AWS Amplify:** CI/CD automático = 🤯
+- **Debugging:** console.log es tu mejor amigo
+- **Persistencia:** A la 3ra va la vencida
+
+---
+
+## 🎯 Para recruiters
+
+**Skills demostradas:**
+- Aprendizaje rápido (AWS stack en 1.5 días)
+- Problem solving (3 iteraciones hasta el éxito)
+- Fullstack (React + AWS backend)
+- Deploy real (no solo localhost)
+
+**Lo que me gustó:** Conectar las piezas y ver todo funcionar al final.
+
+**Lo que fue duro:** Los errores crípticos de AWS. Google y StackOverflow fueron mis compañeros 😄
+
+---
+
+## 🔧 Arquitectura
+
+```
+Next.js App → AWS AppSync → DynamoDB
+      ↓
+ AWS Amplify (hosting)
 ```
 
----
-
-## 🏗️ Arquitectura
-
-```
-🌐 AWS CloudFront (CDN)
-    ↓
-📱 Next.js App (Amplify Hosting)
-    ↓
-🔗 AWS AppSync (GraphQL API)
-    ↓
-💾 DynamoDB (Notes Database)
-```
-
-### **📊 Schema GraphQL**
-```graphql
-enum Sentiment {
-  happy
-  sad
-  neutral  
-  angry
-}
-
-type Note @model @auth(rules: [{ allow: public, provider: apiKey }]) {
-  id: ID!
-  text: String!
-  sentiment: Sentiment!
-  dateCreated: AWSDateTime!
-}
-```
+Simple pero efectiva 👌
 
 ---
 
-## ✨ Funcionalidades
+## 📱 Funcionalidades
 
-### **📝 Gestión de Notas**
-- ✅ Crear notas con texto libre
-- ✅ Seleccionar sentimiento (happy/sad/neutral/angry)
-- ✅ Timestamp automático
-- ✅ Validación de formularios
-
-### **📚 Visualización**
-- ✅ Lista paginada (10 notas por página)
-- ✅ Filtros por sentimiento
-- ✅ Emojis por sentimiento
-- ✅ Diseño responsive
-
-### **🎨 UI/UX**
-- 💜 Tema morado elegante
-- ✨ Efectos glassmorphism
-- 📱 Mobile-first design
-- ⚡ Loading states
+- ✍️ **Crear notas** con sentimiento
+- 📖 **Ver todas las notas** paginadas
+- 🔍 **Filtrar por sentimiento**
+- 📅 **Timestamps automáticos**
+- 💜 **UI que no duele la vista**
 
 ---
 
-## 🚧 Desafíos Superados
+## 🤝 Conclusión
 
-### **🔐 Autenticación GraphQL**
-- **Problema:** "Not Authorized" errors
-- **Solución:** API Key + auth rules en schema
+Fue un challenge intenso pero divertido. Aprendí un montón sobre AWS y al final tengo una app que realmente funciona en producción.
 
-### **🏗️ Monorepo Amplify**
-- **Problema:** Build failures por estructura de carpetas
-- **Solución:** amplify.yml optimizado para website/
-
-### **⚛️ React Hydration**
-- **Problema:** Client/Server mismatch
-- **Solución:** Conditional rendering post-config
-
-### **📦 Dependencies**
-- **Problema:** npm ci failures en Amplify
-- **Solución:** Robust install flags + single-line commands
+¿El resultado? Me siento orgullosa del código y del producto final 💜
 
 ---
 
-## 🎯 Para Empleadores
-
-### **💡 Habilidades demostradas:**
-- ✅ **Aprendizaje rápido:** Dominé AWS stack en 1.5 días
-- ✅ **Problem solving:** Depuración de errores complejos
-- ✅ **Arquitectura:** Diseño escalable y maintible
-- ✅ **Fullstack:** Frontend React + Backend AWS
-- ✅ **DevOps:** CI/CD con Amplify
-- ✅ **Code quality:** TypeScript + ESLint + clean code
-
-### **🏆 Logros del proyecto:**
-- 🚀 **Deploy exitoso** en AWS en 2 días
-- 💜 **UI profesional** con UX moderna
-- 🔧 **Zero downtime** después del deploy
-- 📊 **Arquitectura escalable** para producción
-- 🛡️ **Código seguro** sin credenciales hardcoded
-
----
-
-## 🌟 Reflexión Personal
-
-> "Después de 3 iteraciones y múltiples obstáculos técnicos, logré crear una aplicación completa que me enorgullece. Este proyecto me enseñó la importancia de la persistencia, el aprendizaje continuo y la colaboración efectiva con IA para acelerar el desarrollo."
-
-El resultado final no solo cumple con los requisitos técnicos, sino que demuestra mi capacidad para entregar productos de calidad bajo presión y plazos ajustados.
-
----
-
-## 📞 Contacto
-
-**¿Interesado en colaborar?** Este proyecto refleja mi enfoque para resolver problemas complejos y construir soluciones escalables.
-
----
-
-*Desarrollado con ☕ y mucho 💜 para Pey*
+*Hecho con ☕ y determinación para conseguir un buen trabajo*
