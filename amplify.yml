@@ -12,14 +12,14 @@ frontend:
         - pwd
         - ls -la
         - echo "🔍 Entrando a website y ejecutando todo:"
-        - cd website && npm install --legacy-peer-deps --no-audit --no-fund && npm run build && ls -la .next/
+        - cd website && npm install --legacy-peer-deps --no-audit --no-fund && npm run build && ls -la out/
     build:
       commands:
         - echo "✅ === BUILD COMPLETADO EN PREBUILD ==="
         - echo "📁 Verificando artifacts desde raíz:"
-        - ls -la website/.next/ || echo "⚠️ Checking artifacts..."
+        - ls -la website/out/ || echo "⚠️ Checking artifacts..."
   artifacts:
-    baseDirectory: website/.next
+    baseDirectory: website/out
     files:
       - '**/*'
   cache:
