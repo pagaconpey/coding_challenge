@@ -31,10 +31,11 @@ export const listNotesQuery = /* GraphQL */ `
         updatedAt
       }
       nextToken
-      scannedCount
     }
   }
 `;
 
-// Cliente GraphQL
-export const client = generateClient();
+// Cliente GraphQL con configuración específica de API_KEY
+export const client = generateClient({
+  authMode: 'apiKey'
+});

@@ -1,9 +1,5 @@
 import './globals.css'; 
-
-import { Amplify } from 'aws-amplify';
-import config from '../lib/amplify-config'
-
-Amplify.configure(config);
+import AmplifyProvider from './components/AmplifyProvider';
 
 export default function RootLayout({
   children,
@@ -12,7 +8,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body suppressHydrationWarning={true}>
+        <AmplifyProvider>{children}</AmplifyProvider>
+      </body>
     </html>
   );
 }

@@ -13,8 +13,13 @@ export default function NoteForm() {
   }>({ defaultValues: { sentiment: Sentiment.neutral } });
 
   const onSubmit = async (data: { text: string; sentiment: Sentiment }) => {
-    await createNote(data.text, data.sentiment);
-    reset({ text: "", sentiment: Sentiment.neutral });
+    try {
+      await createNote(data.text, data.sentiment);
+      reset({ text: "", sentiment: Sentiment.neutral });
+    } catch (error) {
+      console.error("Error en onSubmit:", error);
+      // El error ya se maneja en useNotes, aquí solo lo loggeamos
+    }
   };
 
   return (
