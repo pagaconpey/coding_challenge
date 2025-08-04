@@ -8,36 +8,32 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "🔍 === DEBUG ESTRUCTURA COMPLETA ==="
+        - echo "🔍 === DEBUG - YA ESTAMOS EN WEBSITE/ ==="
         - pwd
         - ls -la
-        - echo "🔍 Verificando directorio website:"
-        - ls -la website/ || echo "❌ website/ no encontrado"
+        - echo "🔍 Verificando package.json:"
+        - ls -la package.json || echo "❌ package.json no encontrado"
         - echo "🔍 Verificando Node/npm:"
         - node --version
         - npm --version
         - echo "🔍 Limpiando cache npm:"
         - npm cache clean --force
-        - echo "🔍 === INSTALL + BUILD EN PREBUILD ==="
-        - echo "📁 Cambiando a website e instalando:"
-        - cd website && pwd && ls -la
-        - cd website && npm install --legacy-peer-deps --no-audit --no-fund
-        - echo "🚀 Haciendo build desde preBuild:"
-        - cd website && npm run build
-        - echo "✅ Verificando build output:"
-        - cd website && ls -la .next/ || echo "❌ .next/ no encontrado"
+        - echo "🔍 === INSTALL DIRECTO (SIN CD) ==="
+        - echo "📦 Instalando dependencias:"
+        - npm install --legacy-peer-deps --no-audit --no-fund
     build:
       commands:
-        - echo "✅ Build ya completado en preBuild"
-        - echo "📁 Verificando artifacts:"
-        - ls -la website/.next/ || echo "❌ Artifacts no encontrados"
+        - echo "🚀 === BUILD DIRECTO (SIN CD) ==="
+        - npm run build
+        - echo "✅ Verificando build output:"
+        - ls -la .next/ || echo "❌ .next/ no encontrado"
   artifacts:
-    baseDirectory: website/.next
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - website/node_modules/**/*
+      - node_modules/**/*
 env:
   variables:
     NEXT_PUBLIC_APPSYNC_API_URL: $NEXT_PUBLIC_APPSYNC_API_URL
