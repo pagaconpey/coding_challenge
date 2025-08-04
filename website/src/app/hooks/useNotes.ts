@@ -45,6 +45,11 @@ export function useNotes() {
 
         setNotes((prev) => (token ? [...prev, ...fetchedNotes] : fetchedNotes));
         setNextToken(res?.nextToken || null);
+      } catch (error) {
+        console.error("Error loading notes:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
+        // Mostrar un error más específico al usuario
+        alert(`Error cargando notas: ${error instanceof Error ? error.message : 'Error desconocido'}`);
       } finally {
         loadingStateSetter(false);
       }
@@ -61,18 +66,30 @@ export function useNotes() {
   const reloadNotes = () => setReloadTrigger((prev) => prev + 1);
 
   const createNote = async (text: string, sentiment: Sentiment) => {
-    const input: CreateNoteInput = {
-      text,
-      sentiment,
-      dateCreated: new Date().toISOString(),
-    };
+    try {
+      const input: CreateNoteInput = {
+        text,
+        sentiment,
+        dateCreated: new Date().toISOString(),
+      };
 
-    await client.graphql({
-      query: createNoteMutation,
-      variables: { input },
-    });
+      console.log('🚀 Creando nota:', input);
+      
+      const result = await client.graphql({
+        query: createNoteMutation,
+        variables: { input },
+      });
 
-    reloadNotes();
+      console.log('✅ Nota creada exitosamente:', result);
+      reloadNotes();
+    } catch (error) {
+      console.error("❌ Error creating note:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
+      // Mostrar un error más específico al usuario
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      alert(`Error creando nota: ${errorMessage}`);
+      throw error; // Re-lanzar para que el componente lo maneje
+    }
   };
 
   return {
