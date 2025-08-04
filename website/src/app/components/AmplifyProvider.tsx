@@ -10,8 +10,12 @@ export default function AmplifyProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // Configurar Amplify en el cliente con logs
-    console.log('🔧 Configurando Amplify con:', config);
+    // Configurar Amplify en el cliente con logs (sin mostrar credenciales sensibles)
+    console.log('🔧 Configurando Amplify...');
+    console.log('🔧 Endpoint configurado:', config.aws_appsync_graphqlEndpoint ? '✅' : '❌');
+    console.log('🔧 Auth type:', config.aws_appsync_authenticationType);
+    console.log('🔧 API Key configurada:', config.aws_appsync_apiKey ? '✅' : '❌');
+    
     Amplify.configure(config);
     console.log('✅ Amplify configurado exitosamente');
   }, []);
