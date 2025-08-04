@@ -8,18 +8,16 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "🔍 === INSTALACIÓN DESDE RAÍZ ==="
+        - echo "🚀 === INSTALL Y BUILD EN PREBUILD ==="
         - pwd
         - ls -la
-        - cd website
-        - npm install --legacy-peer-deps --no-audit --no-fund
+        - echo "🔍 Entrando a website y ejecutando todo:"
+        - cd website && npm install --legacy-peer-deps --no-audit --no-fund && npm run build && ls -la .next/
     build:
       commands:
-        - echo "🚀 === BUILD DESDE WEBSITE ==="
-        - cd website
-        - npm run build
-        - echo "✅ Verificando artifacts:"
-        - ls -la .next/
+        - echo "✅ === BUILD COMPLETADO EN PREBUILD ==="
+        - echo "📁 Verificando artifacts desde raíz:"
+        - ls -la website/.next/ || echo "⚠️ Checking artifacts..."
   artifacts:
     baseDirectory: website/.next
     files:
