@@ -29,7 +29,7 @@ frontend:
       commands:
         - echo "✅ === BUILD YA COMPLETADO EN PREBUILD ==="
         - echo "📁 Solo verificando que existan los artifacts:"
-        - ls -la website/.next/ || echo "⚠️ .next/ no encontrado, pero puede ser normal"
+        - cd website && ls -la .next/ || echo "⚠️ .next/ no encontrado, pero puede ser normal"
   artifacts:
     baseDirectory: website/.next
     files:
