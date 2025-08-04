@@ -48,8 +48,33 @@ export function useNotes() {
       } catch (error) {
         console.error("Error loading notes:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        // Mostrar un error más específico al usuario
-        alert(`Error cargando notas: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+        console.error("Error type:", typeof error);
+        console.error("Error constructor:", error?.constructor?.name);
+        
+        // Manejar errores específicos de GraphQL/AWS
+        let errorMessage = 'Error desconocido';
+        
+        if (error && typeof error === 'object') {
+          // Error de GraphQL
+          if ('errors' in error && Array.isArray(error.errors)) {
+            errorMessage = error.errors.map(e => e.message).join(', ');
+          }
+          // Error de AWS Amplify
+          else if ('message' in error) {
+            errorMessage = error.message;
+          }
+          // Error con propiedad error
+          else if ('error' in error && error.error?.message) {
+            errorMessage = error.error.message;
+          }
+          // Cualquier propiedad message anidada
+          else if (error.data?.message) {
+            errorMessage = error.data.message;
+          }
+        }
+        
+        console.error("🚨 Error final:", errorMessage);
+        alert(`Error cargando notas: ${errorMessage}`);
       } finally {
         loadingStateSetter(false);
       }
@@ -85,8 +110,32 @@ export function useNotes() {
     } catch (error) {
       console.error("❌ Error creating note:", error);
       console.error("Error details:", JSON.stringify(error, null, 2));
-      // Mostrar un error más específico al usuario
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      console.error("Error type:", typeof error);
+      console.error("Error constructor:", error?.constructor?.name);
+      
+      // Manejar errores específicos de GraphQL/AWS
+      let errorMessage = 'Error desconocido';
+      
+      if (error && typeof error === 'object') {
+        // Error de GraphQL
+        if ('errors' in error && Array.isArray(error.errors)) {
+          errorMessage = error.errors.map(e => e.message).join(', ');
+        }
+        // Error de AWS Amplify
+        else if ('message' in error) {
+          errorMessage = error.message;
+        }
+        // Error con propiedad error
+        else if ('error' in error && error.error?.message) {
+          errorMessage = error.error.message;
+        }
+        // Cualquier propiedad message anidada
+        else if (error.data?.message) {
+          errorMessage = error.data.message;
+        }
+      }
+      
+      console.error("🚨 Error final creando nota:", errorMessage);
       alert(`Error creando nota: ${errorMessage}`);
       throw error; // Re-lanzar para que el componente lo maneje
     }
