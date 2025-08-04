@@ -2,13 +2,15 @@
 
 import { Amplify } from 'aws-amplify';
 import config from '../../lib/amplify-config';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function AmplifyProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isConfigured, setIsConfigured] = useState(false);
+
   useEffect(() => {
     // Debug completo de la configuración
     console.log('🔧 === DEBUG AMPLIFY CONFIGURATION ===');
@@ -26,10 +28,25 @@ export default function AmplifyProvider({
     console.log('🔧 Endpoint:', config.aws_appsync_graphqlEndpoint ? '✅ Configurado' : '❌ Faltante');
     console.log('🔧 API Key:', config.aws_appsync_apiKey ? '✅ Configurada' : '❌ Faltante');
     
-    Amplify.configure(config);
-    console.log('✅ Amplify configurado exitosamente');
+    try {
+      Amplify.configure(config);
+      console.log('✅ Amplify configurado exitosamente');
+      setIsConfigured(true); // <--- ¡LA CLAVE ESTÁ AQUÍ!
+    } catch (error) {
+      console.error("❌ Error configurando Amplify:", error);
+    }
+    
     console.log('🔧 === END DEBUG ===');
   }, []);
+
+  // 🚀 NO renderizar los hijos hasta que Amplify esté configurado
+  if (!isConfigured) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <div>🔧 Configurando Amplify...</div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

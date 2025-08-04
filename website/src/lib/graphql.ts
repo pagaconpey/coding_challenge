@@ -37,5 +37,5 @@ export const listNotesQuery = /* GraphQL */ `
 
 // Cliente GraphQL con configuración específica de API_KEY
 export const client = generateClient({
-  authMode: 'apiKey'
+  authMode: "apiKey",
 });

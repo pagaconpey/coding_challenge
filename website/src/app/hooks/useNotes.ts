@@ -7,12 +7,26 @@ import {
   ListNotesQuery,
   ModelNoteFilterInput,
 } from "@/API";
-import { client, createNoteMutation, listNotesQuery } from "@/lib/graphql";
+import { listNotesQuery } from "@/lib/graphql";
+import { createNote as createNoteMutation } from "@/graphql/mutations";
+import { generateClient } from "aws-amplify/api";
 
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [filterSentiment, setFilterSentiment] = useState<Sentiment | "">("");
   const [nextToken, setNextToken] = useState<string | null>(null);
+
+  // Función para crear cliente GraphQL de forma lazy
+  const createClient = () => {
+    console.log("🔧 === CREANDO CLIENTE GRAPHQL LAZY ===");
+    console.log("🔧 Amplify debería estar configurado ahora");
+    const client = generateClient({
+      authMode: "apiKey",
+    });
+    console.log("🔧 Cliente GraphQL creado exitosamente");
+    console.log("🔧 === FIN CREACIÓN CLIENTE ===");
+    return client;
+  };
   const [isLoadingNotes, setIsLoadingNotes] = useState(true);
   const [isLoadingMoreNotes, setIsLoadingMoreNotes] = useState(false);
   const [reloadTrigger, setReloadTrigger] = useState(0);
@@ -28,24 +42,25 @@ export function useNotes() {
       loadingStateSetter(true);
 
       try {
-        console.log('🔍 Iniciando loadNotes...');
-        
+        console.log("🔍 Iniciando loadNotes...");
+
         const filter: ModelNoteFilterInput = {};
         if (currentFilterSentiment) {
           filter.sentiment = { eq: currentFilterSentiment as Sentiment };
         }
 
-        console.log('🔍 Variables:', { limit: 10, nextToken: token, filter });
-        
-        // Configurar cliente con API key explícita
+        console.log("🔍 Variables:", { limit: 10, nextToken: token, filter });
+
+        // Configurar cliente con API key explícita (lazy)
+        const client = createClient();
         const result = await client.graphql({
           query: listNotesQuery,
           variables: { limit: 10, nextToken: token, filter },
-          authMode: 'apiKey' // Forzar API key en cada petición
+          authMode: "apiKey", // Forzar API key en cada petición
         });
-        
-        console.log('🔍 Raw result from GraphQL:', result);
-        
+
+        console.log("🔍 Raw result from GraphQL:", result);
+
         const { data } = result as { data: ListNotesQuery };
 
         const res = data.listNotes;
@@ -60,29 +75,31 @@ export function useNotes() {
         console.error("Error details:", JSON.stringify(error, null, 2));
         console.error("Error type:", typeof error);
         console.error("Error constructor:", error?.constructor?.name);
-        
+
         // Manejar errores específicos de GraphQL/AWS
-        let errorMessage = 'Error desconocido';
-        
-        if (error && typeof error === 'object') {
+        let errorMessage = "Error desconocido";
+
+        if (error && typeof error === "object") {
           // Error de GraphQL
-          if ('errors' in error && Array.isArray(error.errors)) {
-            errorMessage = error.errors.map(e => e.message).join(', ');
+          if ("errors" in error && Array.isArray((error as any).errors)) {
+            errorMessage = (error as any).errors
+              .map((e: any) => e.message)
+              .join(", ");
           }
           // Error de AWS Amplify
-          else if ('message' in error) {
-            errorMessage = error.message;
+          else if ("message" in error) {
+            errorMessage = (error as any).message;
           }
           // Error con propiedad error
-          else if ('error' in error && error.error?.message) {
-            errorMessage = error.error.message;
+          else if ("error" in error && (error as any).error?.message) {
+            errorMessage = (error as any).error.message;
           }
           // Cualquier propiedad message anidada
-          else if (error.data?.message) {
-            errorMessage = error.data.message;
+          else if ((error as any).data?.message) {
+            errorMessage = (error as any).data.message;
           }
         }
-        
+
         console.error("🚨 Error final:", errorMessage);
         alert(`Error cargando notas: ${errorMessage}`);
       } finally {
@@ -124,44 +141,77 @@ export function useNotes() {
         dateCreated: new Date().toISOString(),
       };
 
-      console.log('🚀 Creando nota:', input);
-      
+      console.log("🚀 === INICIO CREACIÓN NOTA ===");
+      console.log("🚀 Input para mutación:", input);
+      console.log("🚀 Mutación GraphQL:", createNoteMutation);
+      console.log("🚀 Variables completas:", { input });
+
+      // Crear cliente de forma lazy para garantizar que Amplify esté configurado
+      const client = createClient();
       const result = await client.graphql({
         query: createNoteMutation,
-        variables: { input },
-        authMode: 'apiKey' // Forzar API key en cada petición
+        variables: {
+          input,
+          condition: undefined, // Opcional, pero incluir para la mutación oficial
+        },
+        authMode: "apiKey", // Forzar API key en cada petición
       });
 
-      console.log('✅ Nota creada exitosamente:', result);
+      console.log("✅ === RESPUESTA COMPLETA ===");
+      console.log("✅ Resultado raw:", result);
+      console.log("✅ Data:", result.data);
+      console.log("✅ Errors:", result.errors);
+      console.log("✅ Extensions:", result.extensions);
+      console.log("✅ === FIN RESPUESTA ===");
+
       reloadNotes();
     } catch (error) {
-      console.error("❌ Error creating note:", error);
-      console.error("Error details:", JSON.stringify(error, null, 2));
-      console.error("Error type:", typeof error);
-      console.error("Error constructor:", error?.constructor?.name);
-      
-      // Manejar errores específicos de GraphQL/AWS
-      let errorMessage = 'Error desconocido';
-      
-      if (error && typeof error === 'object') {
-        // Error de GraphQL
-        if ('errors' in error && Array.isArray(error.errors)) {
-          errorMessage = error.errors.map(e => e.message).join(', ');
-        }
-        // Error de AWS Amplify
-        else if ('message' in error) {
-          errorMessage = error.message;
-        }
-        // Error con propiedad error
-        else if ('error' in error && error.error?.message) {
-          errorMessage = error.error.message;
-        }
-        // Cualquier propiedad message anidada
-        else if (error.data?.message) {
-          errorMessage = error.data.message;
+      console.error("❌ === ERROR COMPLETO EN CREACIÓN ===");
+      console.error("❌ Error raw:", error);
+      console.error("❌ Error stringified:", JSON.stringify(error, null, 2));
+      console.error("❌ Error type:", typeof error);
+      console.error("❌ Error constructor:", error?.constructor?.name);
+      console.error("❌ Error stack:", (error as any)?.stack);
+
+      // Inspeccionar todas las propiedades del error
+      if (error && typeof error === "object") {
+        console.error("❌ Propiedades del error:");
+        for (const [key, value] of Object.entries(error)) {
+          console.error(`❌   ${key}:`, value);
         }
       }
-      
+
+      // Verificar si es un error de GraphQL con datos
+      if (error && typeof error === "object" && "data" in error) {
+        console.error("❌ Error data específico:", error.data);
+      }
+
+      console.error("❌ === FIN ERROR COMPLETO ===");
+
+      // Manejar errores específicos de GraphQL/AWS
+      let errorMessage = "Error desconocido";
+
+      if (error && typeof error === "object") {
+        // Error de GraphQL
+        if ("errors" in error && Array.isArray((error as any).errors)) {
+          errorMessage = (error as any).errors
+            .map((e: any) => e.message)
+            .join(", ");
+        }
+        // Error de AWS Amplify
+        else if ("message" in error) {
+          errorMessage = (error as any).message;
+        }
+        // Error con propiedad error
+        else if ("error" in error && (error as any).error?.message) {
+          errorMessage = (error as any).error.message;
+        }
+        // Cualquier propiedad message anidada
+        else if ((error as any).data?.message) {
+          errorMessage = (error as any).data.message;
+        }
+      }
+
       console.error("🚨 Error final creando nota:", errorMessage);
       alert(`Error creando nota: ${errorMessage}`);
       throw error; // Re-lanzar para que el componente lo maneje
