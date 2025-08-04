@@ -8,57 +8,54 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
-export const createNote = /* GraphQL */ `mutation CreateNote(
-  $input: CreateNoteInput!
-  $condition: ModelNoteConditionInput
+export const createTodo = /* GraphQL */ `mutation CreateTodo(
+  $input: CreateTodoInput!
+  $condition: ModelTodoConditionInput
 ) {
-  createNote(input: $input, condition: $condition) {
+  createTodo(input: $input, condition: $condition) {
     id
-    text
-    sentiment
-    dateCreated
+    name
+    description
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateNoteMutationVariables,
-  APITypes.CreateNoteMutation
+  APITypes.CreateTodoMutationVariables,
+  APITypes.CreateTodoMutation
 >;
-export const updateNote = /* GraphQL */ `mutation UpdateNote(
-  $input: UpdateNoteInput!
-  $condition: ModelNoteConditionInput
+export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
+  $input: UpdateTodoInput!
+  $condition: ModelTodoConditionInput
 ) {
-  updateNote(input: $input, condition: $condition) {
+  updateTodo(input: $input, condition: $condition) {
     id
-    text
-    sentiment
-    dateCreated
+    name
+    description
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateNoteMutationVariables,
-  APITypes.UpdateNoteMutation
+  APITypes.UpdateTodoMutationVariables,
+  APITypes.UpdateTodoMutation
 >;
-export const deleteNote = /* GraphQL */ `mutation DeleteNote(
-  $input: DeleteNoteInput!
-  $condition: ModelNoteConditionInput
+export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
+  $input: DeleteTodoInput!
+  $condition: ModelTodoConditionInput
 ) {
-  deleteNote(input: $input, condition: $condition) {
+  deleteTodo(input: $input, condition: $condition) {
     id
-    text
-    sentiment
-    dateCreated
+    name
+    description
     createdAt
     updatedAt
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteNoteMutationVariables,
-  APITypes.DeleteNoteMutation
+  APITypes.DeleteTodoMutationVariables,
+  APITypes.DeleteTodoMutation
 >;
