@@ -4,17 +4,16 @@ import { Amplify } from 'aws-amplify';
 import config from '../../lib/amplify-config';
 import { useEffect } from 'react';
 
-// Configurar Amplify una sola vez en el cliente
-Amplify.configure(config);
-
 export default function AmplifyProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // Asegurar que Amplify está configurado en el cliente
+    // Configurar Amplify en el cliente con logs
+    console.log('🔧 Configurando Amplify con:', config);
     Amplify.configure(config);
+    console.log('✅ Amplify configurado exitosamente');
   }, []);
 
   return <>{children}</>;

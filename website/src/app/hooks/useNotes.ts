@@ -28,15 +28,25 @@ export function useNotes() {
       loadingStateSetter(true);
 
       try {
+        console.log('🔍 Iniciando loadNotes...');
+        console.log('🔍 Client:', client);
+        console.log('🔍 Query:', listNotesQuery);
+        
         const filter: ModelNoteFilterInput = {};
         if (currentFilterSentiment) {
           filter.sentiment = { eq: currentFilterSentiment as Sentiment };
         }
 
-        const { data } = (await client.graphql({
+        console.log('🔍 Variables:', { limit: 10, nextToken: token, filter });
+        
+        const result = await client.graphql({
           query: listNotesQuery,
           variables: { limit: 10, nextToken: token, filter },
-        })) as { data: ListNotesQuery };
+        });
+        
+        console.log('🔍 Raw result from GraphQL:', result);
+        
+        const { data } = result as { data: ListNotesQuery };
 
         const res = data.listNotes;
         const fetchedNotes: Note[] = (res?.items || []).filter(
