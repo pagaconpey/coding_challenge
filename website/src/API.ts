@@ -2,18 +2,28 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTodoInput = {
+export type CreateNoteInput = {
   id?: string | null,
-  name: string,
-  description?: string | null,
+  text: string,
+  sentiment: Sentiment,
+  dateCreated: string,
 };
 
-export type ModelTodoConditionInput = {
-  name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoConditionInput | null > | null,
-  or?: Array< ModelTodoConditionInput | null > | null,
-  not?: ModelTodoConditionInput | null,
+export enum Sentiment {
+  happy = "happy",
+  sad = "sad",
+  neutral = "neutral",
+  angry = "angry",
+}
+
+
+export type ModelNoteConditionInput = {
+  text?: ModelStringInput | null,
+  sentiment?: ModelSentimentInput | null,
+  dateCreated?: ModelStringInput | null,
+  and?: Array< ModelNoteConditionInput | null > | null,
+  or?: Array< ModelNoteConditionInput | null > | null,
+  not?: ModelNoteConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
 };
@@ -58,34 +68,42 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Todo = {
-  __typename: "Todo",
+export type ModelSentimentInput = {
+  eq?: Sentiment | null,
+  ne?: Sentiment | null,
+};
+
+export type Note = {
+  __typename: "Note",
   id: string,
-  name: string,
-  description?: string | null,
+  text: string,
+  sentiment: Sentiment,
+  dateCreated: string,
   createdAt: string,
   updatedAt: string,
 };
 
-export type UpdateTodoInput = {
+export type UpdateNoteInput = {
   id: string,
-  name?: string | null,
-  description?: string | null,
+  text?: string | null,
+  sentiment?: Sentiment | null,
+  dateCreated?: string | null,
 };
 
-export type DeleteTodoInput = {
+export type DeleteNoteInput = {
   id: string,
 };
 
-export type ModelTodoFilterInput = {
+export type ModelNoteFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
+  text?: ModelStringInput | null,
+  sentiment?: ModelSentimentInput | null,
+  dateCreated?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
-  not?: ModelTodoFilterInput | null,
+  and?: Array< ModelNoteFilterInput | null > | null,
+  or?: Array< ModelNoteFilterInput | null > | null,
+  not?: ModelNoteFilterInput | null,
 };
 
 export type ModelIDInput = {
@@ -104,20 +122,21 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items:  Array<Todo | null >,
+export type ModelNoteConnection = {
+  __typename: "ModelNoteConnection",
+  items:  Array<Note | null >,
   nextToken?: string | null,
 };
 
-export type ModelSubscriptionTodoFilterInput = {
+export type ModelSubscriptionNoteFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  description?: ModelSubscriptionStringInput | null,
+  text?: ModelSubscriptionStringInput | null,
+  sentiment?: ModelSubscriptionStringInput | null,
+  dateCreated?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionTodoFilterInput | null > | null,
-  or?: Array< ModelSubscriptionTodoFilterInput | null > | null,
+  and?: Array< ModelSubscriptionNoteFilterInput | null > | null,
+  or?: Array< ModelSubscriptionNoteFilterInput | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -150,83 +169,88 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type CreateTodoMutationVariables = {
-  input: CreateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type CreateNoteMutationVariables = {
+  input: CreateNoteInput,
+  condition?: ModelNoteConditionInput | null,
 };
 
-export type CreateTodoMutation = {
-  createTodo?:  {
-    __typename: "Todo",
+export type CreateNoteMutation = {
+  createNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdateTodoMutationVariables = {
-  input: UpdateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type UpdateNoteMutationVariables = {
+  input: UpdateNoteInput,
+  condition?: ModelNoteConditionInput | null,
 };
 
-export type UpdateTodoMutation = {
-  updateTodo?:  {
-    __typename: "Todo",
+export type UpdateNoteMutation = {
+  updateNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type DeleteTodoMutationVariables = {
-  input: DeleteTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type DeleteNoteMutationVariables = {
+  input: DeleteNoteInput,
+  condition?: ModelNoteConditionInput | null,
 };
 
-export type DeleteTodoMutation = {
-  deleteTodo?:  {
-    __typename: "Todo",
+export type DeleteNoteMutation = {
+  deleteNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type GetTodoQueryVariables = {
+export type GetNoteQueryVariables = {
   id: string,
 };
 
-export type GetTodoQuery = {
-  getTodo?:  {
-    __typename: "Todo",
+export type GetNoteQuery = {
+  getNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListTodosQueryVariables = {
-  filter?: ModelTodoFilterInput | null,
+export type ListNotesQueryVariables = {
+  filter?: ModelNoteFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTodosQuery = {
-  listTodos?:  {
-    __typename: "ModelTodoConnection",
+export type ListNotesQuery = {
+  listNotes?:  {
+    __typename: "ModelNoteConnection",
     items:  Array< {
-      __typename: "Todo",
+      __typename: "Note",
       id: string,
-      name: string,
-      description?: string | null,
+      text: string,
+      sentiment: Sentiment,
+      dateCreated: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -234,46 +258,49 @@ export type ListTodosQuery = {
   } | null,
 };
 
-export type OnCreateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnCreateNoteSubscriptionVariables = {
+  filter?: ModelSubscriptionNoteFilterInput | null,
 };
 
-export type OnCreateTodoSubscription = {
-  onCreateTodo?:  {
-    __typename: "Todo",
+export type OnCreateNoteSubscription = {
+  onCreateNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnUpdateNoteSubscriptionVariables = {
+  filter?: ModelSubscriptionNoteFilterInput | null,
 };
 
-export type OnUpdateTodoSubscription = {
-  onUpdateTodo?:  {
-    __typename: "Todo",
+export type OnUpdateNoteSubscription = {
+  onUpdateNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnDeleteTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnDeleteNoteSubscriptionVariables = {
+  filter?: ModelSubscriptionNoteFilterInput | null,
 };
 
-export type OnDeleteTodoSubscription = {
-  onDeleteTodo?:  {
-    __typename: "Todo",
+export type OnDeleteNoteSubscription = {
+  onDeleteNote?:  {
+    __typename: "Note",
     id: string,
-    name: string,
-    description?: string | null,
+    text: string,
+    sentiment: Sentiment,
+    dateCreated: string,
     createdAt: string,
     updatedAt: string,
   } | null,
