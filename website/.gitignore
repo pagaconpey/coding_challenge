@@ -106,7 +106,6 @@ amplifyconfiguration.*
 amplify/.config/
 # Node/npm
 node_modules/
-package-lock.json
 yarn.lock
 npm-debug.log*
 # --- Fin seguridad ---
