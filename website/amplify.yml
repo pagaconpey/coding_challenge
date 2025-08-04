@@ -5,6 +5,7 @@ frontend:
       commands:
         - npm install -g @aws-amplify/cli
         - amplify pull --yes --appId d6otbq3z6xa4f --envName dev
+        - ls -R website/src | grep aws-exports || echo "NO FILE FOUND"
         - cd website
         - npm ci
     build:
