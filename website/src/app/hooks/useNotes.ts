@@ -29,8 +29,6 @@ export function useNotes() {
 
       try {
         console.log('🔍 Iniciando loadNotes...');
-        console.log('🔍 Client:', client);
-        console.log('🔍 Query:', listNotesQuery);
         
         const filter: ModelNoteFilterInput = {};
         if (currentFilterSentiment) {
@@ -39,9 +37,11 @@ export function useNotes() {
 
         console.log('🔍 Variables:', { limit: 10, nextToken: token, filter });
         
+        // Configurar cliente con API key explícita
         const result = await client.graphql({
           query: listNotesQuery,
           variables: { limit: 10, nextToken: token, filter },
+          authMode: 'apiKey' // Forzar API key en cada petición
         });
         
         console.log('🔍 Raw result from GraphQL:', result);
@@ -93,10 +93,26 @@ export function useNotes() {
   );
 
   useEffect(() => {
+    // Solo cargar notas en el mount inicial, no en cada cambio de filtro
     setNotes([]);
     setNextToken(null);
     loadNotes(null, filterSentiment);
-  }, [reloadTrigger, filterSentiment, loadNotes]);
+  }, [reloadTrigger]); // Removido filterSentiment para evitar peticiones innecesarias
+
+  // Efecto separado para filtrar notas localmente sin peticiones al servidor
+  useEffect(() => {
+    if (filterSentiment) {
+      // Re-fetch solo si hay un filtro activo (esto es necesario por el backend)
+      setNotes([]);
+      setNextToken(null);
+      loadNotes(null, filterSentiment);
+    } else {
+      // Si no hay filtro, cargar todas las notas
+      setNotes([]);
+      setNextToken(null);
+      loadNotes(null, "");
+    }
+  }, [filterSentiment]); // Solo cuando cambia el filtro
 
   const reloadNotes = () => setReloadTrigger((prev) => prev + 1);
 
@@ -113,6 +129,7 @@ export function useNotes() {
       const result = await client.graphql({
         query: createNoteMutation,
         variables: { input },
+        authMode: 'apiKey' // Forzar API key en cada petición
       });
 
       console.log('✅ Nota creada exitosamente:', result);
