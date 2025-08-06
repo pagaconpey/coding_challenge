@@ -26,20 +26,14 @@ cd website
 npm install
 cd ..
 
-# Instalar dependencias del backend
-echo ""
-echo "📦 Instalando dependencias del backend..."
-cd backend
-npm install
-cd ..
+# Backend se maneja con Amplify CLI (no dependencias separadas)
 
 echo ""
 echo "✅ Configuración completada!"
 echo ""
 echo "📋 Próximos pasos:"
 echo "1. Configura AWS CLI: aws configure"
-echo "2. Despliega el backend: cd backend && cdk deploy"
-echo "3. Configura Amplify: cd website && amplify init"
-echo "4. Despliega el frontend: cd website && amplify publish"
+echo "2. Configura Amplify: cd website && amplify init"
+echo "3. Despliega la aplicación: cd website && amplify publish"
 echo ""
 echo "📖 Consulta el README.md para instrucciones detalladas" 

@@ -18,7 +18,7 @@ Los siguientes archivos NO deben subirse a GitHub:
 - `credentials` - Archivos de credenciales
 - `venv/` - Entornos virtuales Python
 - `node_modules/` - Dependencias
-- `cdk.out/` - Outputs de CDK
+
 - `*.log` - Archivos de log
 
 ## Buenas Prácticas
