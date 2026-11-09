@@ -43,10 +43,10 @@ Crear un juego en el navegador de tipo **Arcade "insert coin"**, donde una parti
   - validar que el `amount` y el `gameId` correspondan a un juego `PENDING`;
   - hacer la transición `PENDING -> PAID` con una **escritura condicional**.
 - La Lambda del webhook **no** publica en SNS. Un handler de **DynamoDB Streams** detecta el evento `MODIFY` del `GAME` con `status` `PENDING -> PAID` (comparando `OldImage` y `NewImage`) y publica en **SNS** con el atributo `eventType: gamePaid`.
-- Un suscriptor de SNS (con **filter policy**) ejecuta una mutación de AppSync (`updateGameToPaid`, protegida por IAM) que dispara la suscripción `onGamePaid(gameId)` en el cliente.
+- Un suscriptor de SNS (con **filter policy**) ejecuta una mutación de AppSync (`updateGameToPaid`) que dispara la suscripción `onGamePaid(gameId)` en el cliente.
 - Si el QR expira sin pago, el juego queda `EXPIRED` y el usuario puede insertar otra moneda.
 
-> Ningún usuario debe poder leer o modificar juegos de otro, ni invocar mutaciones `@aws_iam`.
+> Ningún usuario debe poder leer o modificar juegos de otro, ni invocar las mutaciones internas (`updateGameToPaid`, `updateLeaderboard`).
 
 3. **Jugar**
 - `updateGame(gameId, status: PLAYING)`: solo el dueño del juego, solo desde `PAID`. Pasa a `PLAYING` y guarda `dateStarted` en el servidor.
@@ -76,7 +76,7 @@ Crear un juego en el navegador de tipo **Arcade "insert coin"**, donde una parti
 - **Frontend**: React.js con Next.js, Tailwind CSS, Amplify JS (o equivalente) para Auth y GraphQL.
 - **IaC**: AWS CDK en Typescript, organizado en stacks o constructs (por ejemplo auth, data, api, integration).
 - **API**: AppSync GraphQL, con:
-  - autorización `AMAZON_COGNITO_USER_POOLS` por defecto e `AWS_IAM` para mutaciones internas;
+  - autorización `AMAZON_COGNITO_USER_POOLS`;
   - resolvers **APPSYNC_JS** directos a DynamoDB, y Lambdas (por ejemplo `createGame`).
 - **Lambda**: Python 3.12 (preferido) o Node.js 22.
 - **Mensajería**: DynamoDB Streams ([`NEW_AND_OLD_IMAGES`](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html), [con Lambda](https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html)) hacia un handler que publica en al menos un tópico **SNS**, con suscripciones filtradas por `eventType`. Ninguna mutación ni webhook publica directamente en SNS.
@@ -170,8 +170,8 @@ type Query {
 type Mutation {
   createGame: Game
   updateGame(gameId: ID!, status: GameStatus!, score: Int): Game
-  updateGameToPaid(gameId: ID!): Game @aws_iam
-  updateLeaderboard: Leaderboard @aws_iam
+  updateGameToPaid(gameId: ID!): Game
+  updateLeaderboard: Leaderboard
 }
 
 type Subscription {
@@ -219,7 +219,7 @@ Crea un archivo `analytics.ipynb` con visualizaciones de las partidas:
 ## 🧠 Qué evaluaremos
 
 - Flujo completo funcionando con un pago real.
-- Seguridad: firma del webhook, autorización por usuario, secretos, mutaciones IAM.
+- Seguridad: firma del webhook, autorización por usuario, secretos, protección de mutaciones internas.
 - Correctitud: idempotencia, escrituras condicionales, transiciones de estado válidas.
 - Arquitectura orientada a eventos (DynamoDB Streams, SNS con filtros, suscripciones AppSync).
 - Diseño de DynamoDB (patrones de acceso sin Scan).
