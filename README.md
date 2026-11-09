@@ -175,7 +175,7 @@ type Mutation {
 }
 
 type Subscription {
-  onGamePaid(gameId: ID!): Game @aws_subscribe(mutations: ["updateGameToPaid"])
+  onGamePaid(id: ID!): Game @aws_subscribe(mutations: ["updateGameToPaid"])
   onLeaderboardUpdated: Leaderboard @aws_subscribe(mutations: ["updateLeaderboard"])
 }
 ```
